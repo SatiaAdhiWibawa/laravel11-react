@@ -30,11 +30,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    //     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    //     Route::get('/users', [UsersController::class, 'index'])->name('users.edit');
-    //     Route::post('/users', [UsersController::class, 'index'])->name('users.create');
-    //     Route::patch('/users', [UsersController::class, 'update'])->name('users.update');
-    //     Route::delete('/users', [UsersController::class, 'destroy'])->name('users.destroy');
     Route::resource('/users', UsersController::class);
 });
 

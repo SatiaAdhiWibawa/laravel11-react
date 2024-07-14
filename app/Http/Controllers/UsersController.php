@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class UsersController extends Controller
@@ -12,8 +13,9 @@ class UsersController extends Controller
 
     // VARIABLES GLOBALS
     protected $rules = [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255',
+        'name'     => 'required|string|max:255',
+        'email'    => 'required|string|email|max:255',
+        'password' => 'required|string|min:8|confirmed',
     ];
 
 
@@ -32,29 +34,42 @@ class UsersController extends Controller
     }
 
 
-    // ================================== //
-    // FUCTION TO DISPLAY USERS EDIT PAGE //
-    // ================================== //
-    public function edit($id)
+    // =================================== //
+    // FUCTION CREATE A NEW USER RECORD    //
+    // =================================== //
+    public function create()
     {
         try {
-            return Inertia::render('Users/Edit', [
-                'user' => User::find($id),
-            ]);
+            return Inertia::render('Users/Create');
+        } catch (Exception $e) {
+            abort(500, 'Internal Server Error' . $e->getMessage());
+        }
+    }
+
+
+    // =================================== //
+    // FUCTION STORE A NEW USER RECORD    //
+    // =================================== //
+    public function store(Request $request)
+    {
+        try {
+            $request->validate($this->rules);
+            User::create($request->all());
+            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');
         } catch (Exception $e) {
             abort(500, 'Internal Server Error' . $e->getMessage());
         }
     }
 
     // =================================== //
-    // FUCTION TO CREATE A NEW USER RECORD //
+    // FUCTION TO DISPLAY USERS EDIT PAGE //
     // =================================== //
-    public function create(Request $request)
+    public function edit($id)
     {
         try {
-            $request->validate($this->rules);
-            User::create($request->all());
-            return redirect()->route('users.index');
+            return Inertia::render('Users/Edit', [
+                'user' => User::find($id),
+            ]);
         } catch (Exception $e) {
             abort(500, 'Internal Server Error' . $e->getMessage());
         }

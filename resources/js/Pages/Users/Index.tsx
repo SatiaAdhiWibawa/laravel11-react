@@ -56,19 +56,19 @@ export default function UsersIndex({ auth, users, flash }: Props) {
     []
   );
 
-  // Function to display message
+  // Function untuk menampilkan pesan
   const showMessage = () => {
-    if (flash && flash.success) { // Check if flash and flash.success are defined
+    if (flash && flash.success) { // cek jika flash.success ada
       setMessage(flash.success);
       setTimeout(() => {
         setMessage(null);
-      }, 3000); // Remove message after 3 seconds
+      }, 5000); // hapus pesan setelah 5 detik
     }
   };
 
   useEffect(() => {
     showMessage();
-  }, [flash]); // Call showMessage when flash changes
+  }, [flash]); // panggil showMessage saat flash berubah
 
   return (
     <AuthenticatedLayout
@@ -90,7 +90,7 @@ export default function UsersIndex({ auth, users, flash }: Props) {
             href={route('users.create')}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
-            Add User
+            Tambah User
           </Link>
         </div>
 
