@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Exception;
 
 class UsersController extends Controller
@@ -54,7 +56,13 @@ class UsersController extends Controller
     {
         try {
             $request->validate($this->rules);
-            User::create($request->all());
+
+            User::create([
+                'name'     => $request->name,
+                'email'    => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
             return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan!');
         } catch (Exception $e) {
             abort(500, 'Internal Server Error' . $e->getMessage());
